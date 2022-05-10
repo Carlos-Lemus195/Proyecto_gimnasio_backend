@@ -13,7 +13,7 @@ class RutinaService {
     }
 
     async getRutinas() {
-        const rutinas = await this.mongoDB.getallRutinas(this.collection);
+        const rutinas = await this.mongoDB.getTodos(this.collection);
         return rutinas || {};
     }
 
