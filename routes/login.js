@@ -7,10 +7,10 @@ function loginAPI(app) {
     app.use("/login", router);
     const loginService = new LoginService();
 
-    router.get("/", async function(req, res, next){
-        const { body: data } = req;
+    router.post("/", async function(req, res, next){
+        const { query: data } = req;
+
         try {
-            
             const loginVerified = await loginService.verifyCredentials(data);
             res.status(200).json({
                 message: loginVerified

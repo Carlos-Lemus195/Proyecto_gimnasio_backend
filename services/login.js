@@ -1,4 +1,5 @@
 const MongoLib = require('../lib/mongo');
+const jwt = require('jsonwebtoken');
 
 class LoginService {
 
@@ -10,34 +11,28 @@ class LoginService {
     async verifyCredentials(data) {
         let result = "";
         var correctPassword = true;
-        try {
-            const verify = await this.mongoDB.getUsername(this.collection, data.username);
+        
+        const verify = await this.mongoDB.getEmail(this.collection, data.email);
 
-            if ( verify.isActive == true ) {
+        if ( verify != null ) {
 
-                try {
-                    var decoded = jwt.verify(verify.password, data.password);
-                } catch(err) {
-                    correctPassword = false;
-                }
-
-                if (correctPassword) {
-                    result = "Welcome!!!";
-                } else {
-                    result = "Wrong Password";
-                }
-
-            } else {
-                result = "The account is not active";   
+            try {
+                var decoded = jwt.verify(verify.password, data.password);
+            } catch(err) {
+                correctPassword = false;
             }
 
-        } catch (error) {
-            result = "Wrong Username";
-        }
+            if (correctPassword) {
+                result = "Welcome " + verify.nombreCompleto + "!!!";
+            } else {
+                result = "Contraseña Incorrecta";
+            }
 
+        } else {
+            result = "Email no asociado";   
+        }
         return result;
     }
-
 }
 
 module.exports = LoginService;
