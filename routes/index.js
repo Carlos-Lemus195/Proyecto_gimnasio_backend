@@ -5,6 +5,7 @@ const loginAPI = require('./login.js')
 const dietaAPI = require('./dietas.js')
 const SucursalAPI = require('./Sucursal.js')
 const rutinaAPI = require('./rutina.js')
+const verifyEmailAPI = require('./verifyEmail.js')
 
 function  controllers(app) {
     luhnAPI(app);
@@ -14,6 +15,7 @@ function  controllers(app) {
     dietaAPI(app);
     SucursalAPI(app);
     rutinaAPI(app);
+    verifyEmailAPI(app);
 }
 
 module.exports = controllers;
