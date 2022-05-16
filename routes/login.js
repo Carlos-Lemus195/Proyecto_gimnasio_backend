@@ -12,9 +12,9 @@ function loginAPI(app) {
 
         try {
             const loginVerified = await loginService.verifyCredentials(data);
-            res.status(200).json({
-                message: loginVerified
-            });
+            res.status(200).json(
+                loginVerified
+            );
 
         } catch(err) {
             res.status(200).json({

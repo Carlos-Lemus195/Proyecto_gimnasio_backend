@@ -9,7 +9,7 @@ class LoginService {
     }
 
     async verifyCredentials(data) {
-        let result = "";
+        let result = {};
         var correctPassword = true;
         
         const verify = await this.mongoDB.getEmail(this.collection, data.email);
@@ -23,13 +23,13 @@ class LoginService {
             }
 
             if (correctPassword) {
-                result = "Welcome " + verify.nombreCompleto + "!!!";
+                result = {message: "Welcome " + verify.nombreCompleto + "!!!", rol: verify.puesto_rol};
             } else {
-                result = "Contraseña Incorrecta";
+                result = {message: "Contraseña Incorrecta", rol: null};
             }
 
         } else {
-            result = "Email no asociado";   
+            result = {message: "Email no asociado", rol:null};
         }
         return result;
     }
