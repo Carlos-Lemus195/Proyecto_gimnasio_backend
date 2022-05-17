@@ -29,6 +29,57 @@ function registroAPI(app) {
         }
     });
 
+    router.post("/", async function(req, res, next){
+        const { body: data } = req;
+
+        try {
+            const registroUpdated = await registroService.updateRegistro(data);
+            res.status(200).json({
+                data: registroUpdated,
+                message: 'empleado succesfully updated'
+            });
+
+        } catch(err) {
+            res.status(200).json({
+                message: 'empleado not updated'
+            });
+            next(err);
+        }
+    });
+    router.get("/", async function(req, res, next){
+        
+        try {
+            const registrorequested = await registroService.getRegistro();
+            res.status(200).json({
+                data: registrorequested,
+                message: 'Empleado succesfully requested'
+            });
+
+        } catch(err) {
+            res.status(200).json({
+                message: 'Empleado not exists'
+            });
+            next(err);
+        }
+    });
+    router.delete("/", async function(req, res, next){
+        const { body: data } = req;
+
+        try {
+            const registroDeleted = await registroService.deleteRegistro(data);
+            res.status(200).json({
+                data: registroDeleted,
+                message: 'empleado succesfully deleted'
+            });
+
+        } catch(err) {
+            res.status(200).json({
+                message: 'empleado not deleted'
+            });
+            next(err);
+        }
+    });
+
 }
 
 module.exports = registroAPI;
