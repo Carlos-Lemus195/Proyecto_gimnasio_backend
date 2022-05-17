@@ -8,7 +8,7 @@ function rutinaAPI(app) {
 
     router.get("/", async function(req, res, next){
         const { body: datos } = req;
-        console.log(datos);
+        console.log(datos)
         try {
             const result = await rutinaService.getRutina(datos.id);
             res.status(200).json({
@@ -46,22 +46,24 @@ function rutinaAPI(app) {
     });
 
     router.post("/", async function(req, res, next){
-        const { query: data } = req;
-        console.log("query", data);
+        const { body: data } = req;
+
         try {
-                const rutinaUpdate = await rutinaService.updateRutina(data);
-                res.status(200).json({
-                    data: rutinaUpdate,
-                    message: 'rutina succesfully updated'
-                });
+            const rutinaUpdated = await rutinaService.updateRutina(data);
+            res.status(200).json({
+                data: rutinaUpdated,
+                message: 'Rutina succesfully updated'
+            });
         } catch (error) {
-            next(error);
+            res.status(200).json({
+                message: 'Rutina not updated'
+            });
+            next(err);
         }
     });
 
     router.delete("/", async function(req, res, next){
         const { body: datos } = req;
-        console.log(datos);
         try {
             const rutinaDelete = await rutinaService.deleteRutina(datos.id);
             res.status(200).json({

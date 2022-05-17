@@ -8,7 +8,7 @@ class RutinaService {
     }
 
     async getRutina(n) {
-        const rutina = await this.mongoDB.getRutina(this.collection, n);
+        const rutina = await this.mongoDB.getRutin(this.collection, n);
         return rutina || {};
     }
 
@@ -23,7 +23,7 @@ class RutinaService {
     }
 
     async updateRutina(data) {
-        const rutinaUpdated = await this.mongoDB.update(this.collection, data.id, data);
+        const rutinaUpdated = await this.mongoDB.updateRutina(this.collection, data.id, data);
         return rutinaUpdated || {};
     }
 
