@@ -7,6 +7,7 @@ class LoginService {
         this.collection = 'Empleados';
         this.mongoDB = new MongoLib();
     }
+    
 
     async verifyCredentials(data) {
         let result = {};
