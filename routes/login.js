@@ -7,6 +7,11 @@ function loginAPI(app) {
     app.use("/login", router);
     const loginService = new LoginService();
 
+    router.get("/", async function(req){
+        const { query: date } = req;
+        const Mora = await loginService.verifyMora(date.date);
+    });
+
     router.post("/", async function(req, res, next){
         const { query: data } = req;
 
