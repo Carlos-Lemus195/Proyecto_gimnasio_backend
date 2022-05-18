@@ -5,6 +5,7 @@ class PagoPlataformaService {
     constructor() {
         this.collection = 'Clientes';
         this.mongoDB = new MongoLib();
+        this.todayYear = new Date().getFullYear();
     }
 
     async realizarPago(email) {
@@ -13,8 +14,11 @@ class PagoPlataformaService {
         let month = parseInt(data.fechaPago.slice(5,7));
         let day = parseInt(data.fechaPago.slice(8,10));
 
-        if (month == 12) { year += 1; month = 1; } else { month += 1; }
-        const newFechaPago = year.toString() + '-' + (month).toString() + '-' + day.toString();
+        if (year < this.todayYear) { year = this.todayYear; };
+        if (month == 12) { year += 1; month = 1; } else { month += 1; };
+        if (month < 10) { month = '0' + month.toString() };
+        if (day < 10) { day = '0' + day.toString() };
+        const newFechaPago = year.toString() + '-' + month + '-' + day;
 
         const realizarPago = await this.mongoDB.realizarPago(this.collection, email, newFechaPago);
         return realizarPago;

@@ -9,21 +9,33 @@ class LoginService {
     }
 
     async verifyMora(date){
+        let todayYear = parseInt(date.slice(0,4));
         let todayMonth = parseInt(date.slice(5,7));
         let todayDay = parseInt(date.slice(8,10));
 
         const clientes = await this.mongoDB.getClientesNoMorosos('Clientes');
         
         clientes.forEach(function callback(element) {
+            let year = parseInt(element.fechaPago.slice(0,4));
             let month = parseInt(element.fechaPago.slice(5,7));
             let day = parseInt(element.fechaPago.slice(8,10));
             
-            if (todayMonth == month) {
-                if (todayDay - day >= 5) {
-                    new MongoLib().updateMoroso('Clientes', element._id);
+            if (todayYear < year) {
+                if (todayMonth == month) {
+                    if (todayDay - day >= 5) {
+                        new MongoLib().updateMoroso('Clientes', element._id);
+                    }
+                } else if (todayMonth > month) {
+                    if ((todayDay + 30) - day >= 5 ) {
+                        new MongoLib().updateMoroso('Clientes', element._id);
+                    }
                 }
-            } else if (todayMonth > month) {
-                if ((todayDay + 30) - day >= 5 ) {
+            } else {
+                if (todayMonth == 1) {
+                    if ((todayDay + 30) - day >= 5 ) {
+                        new MongoLib().updateMoroso('Clientes', element._id);
+                    }
+                } else {
                     new MongoLib().updateMoroso('Clientes', element._id);
                 }
             }
