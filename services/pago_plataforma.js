@@ -5,6 +5,7 @@ class PagoPlataformaService {
     constructor() {
         this.collection = 'Clientes';
         this.mongoDB = new MongoLib();
+        this.todayMonth = new Date().getMonth();
         this.todayYear = new Date().getFullYear();
     }
 
@@ -15,6 +16,7 @@ class PagoPlataformaService {
         let day = parseInt(data.fechaPago.slice(8,10));
 
         if (year < this.todayYear) { year = this.todayYear; };
+        if (month < this.todayMonth) { month = this.todayMonth; };
         if (month == 12) { year += 1; month = 1; } else { month += 1; };
         if (month < 10) { month = '0' + month.toString() };
         if (day < 10) { day = '0' + day.toString() };

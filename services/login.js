@@ -20,7 +20,7 @@ class LoginService {
             let month = parseInt(element.fechaPago.slice(5,7));
             let day = parseInt(element.fechaPago.slice(8,10));
             
-            if (todayYear < year) {
+            if (todayYear <= year) {
                 if (todayMonth == month) {
                     if (todayDay - day >= 5) {
                         new MongoLib().updateMoroso('Clientes', element._id);
