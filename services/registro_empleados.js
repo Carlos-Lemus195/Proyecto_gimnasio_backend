@@ -4,17 +4,18 @@ class RegistroService {
 
     constructor() {
         this.collection = 'Empleados';
+        this.collection1 = 'Sucursales'
         this.mongoDB = new MongoLib();
     }
 
     async createRegistro(data) {
         const registroCreated = await this.mongoDB.create(this.collection, data);
+        const updateEmpleadosSucursalMas = await this.mongoDB.updateCantEmpleadosMas(this.collection1, data.noSucursal);
         return registroCreated;
     }
 
     async getRegistro() {
         const registro = await this.mongoDB.getTodos(this.collection);
-        console.log('empleado from service', registro);
         return registro || {};
     }
     async updateRegistro(data) {
@@ -23,9 +24,9 @@ class RegistroService {
         return registroUpdated || {};
     }
 
-    async deleteRegistro(id) {
-        const registroDeleted = await this.mongoDB.delete(this.collection, id);
-        console.log('empleado deleted', registroDeleted);
+    async deleteRegistro(data) {
+        const registroDeleted = await this.mongoDB.deleteEmpleado(this.collection, data.data);
+        const updateEmpleadosSucursalMenos = await this.mongoDB.updateCantEmpleadosMenos(this.collection1, data.data.noSucursal);
         return registroDeleted || {};
     }
 

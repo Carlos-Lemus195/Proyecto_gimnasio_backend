@@ -16,7 +16,6 @@ function SucursalAPI(app) {
         const cantidadClientes = data.cantidadClientes;
         const cantidadEmpleados = data.cantidadEmpleados;
         const SucursalLista = {noSucursal,direccion,cantidadClientes,cantidadEmpleados};
-        console.log('SucursalLista',SucursalLista);
         try {
             const sucursalCreated = await sucursalService.createSucursal(SucursalLista);
             res.status(200).json({
@@ -34,10 +33,12 @@ function SucursalAPI(app) {
 
     router.post("/", async function(req, res, next){
         const { body: data } = req;
+        console.log('data:',data);
 
         try {
             const sucursalUpdated = await sucursalService.updateSucursal(data);
             res.status(200).json({
+                
                 data: sucursalUpdated,
                 message: 'Sucursal succesfully updated'
             });
