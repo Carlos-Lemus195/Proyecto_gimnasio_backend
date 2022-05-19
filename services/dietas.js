@@ -8,6 +8,7 @@ class DietasService {
     }
 
     async createDieta(data) {
+        console.log(data)
         const dietaCreated = await this.mongoDB.create(this.collection, data);
         return dietaCreated;
     }
@@ -31,6 +32,19 @@ class DietasService {
         const dieta = await this.mongoDB.getTodos(this.collection);
         return dieta || {};
     }
+
+    // async countDieta() {
+    //     const count = await this.mongoDB.count(this.collection);
+    //     console.log('count', count)
+    //     return count;
+    // }
+
+    // async findskip(t) {
+    //     console.log('t', t)
+    //     const findsk = await this.mongoDB.findskip(this.collection, t);
+    //     console.log('count', findsk)
+    //     return findsk;
+    // }
 
 }
 
