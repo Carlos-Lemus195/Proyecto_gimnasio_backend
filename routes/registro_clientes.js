@@ -12,7 +12,7 @@ function registroAPI(app) {
     router.put("/", async function(req, res, next){
         const { query: datos } = req;
         try {
-            const remainingdata = { "mensualidad": 250, "moroso": "no", "montoMora": 0, "estado": "activo"};
+            const remainingdata = { "mensualidad": 250, "moroso": "no", "montoMora": 0, "estado": "activo", "cantUltimoPago": 0};
             const data = Object.assign(datos,remainingdata);
             const registroCreated = await registroService.createRegistro(data);
             res.status(200).json({

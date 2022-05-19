@@ -11,6 +11,9 @@ class PagoPlataformaService {
 
     async realizarPago(email) {
         const data = await this.mongoDB.getEmail(this.collection, email);
+
+        let cantUltimoPago = data.montoMora + data.mensualidad;
+
         let year = parseInt(data.fechaPago.slice(0,4));
         let month = parseInt(data.fechaPago.slice(5,7));
         let day = parseInt(data.fechaPago.slice(8,10));
@@ -22,7 +25,7 @@ class PagoPlataformaService {
         if (day < 10) { day = '0' + day.toString() };
         const newFechaPago = year.toString() + '-' + month + '-' + day;
 
-        const realizarPago = await this.mongoDB.realizarPago(this.collection, email, newFechaPago);
+        const realizarPago = await this.mongoDB.realizarPago(this.collection, email, newFechaPago, cantUltimoPago);
         return realizarPago;
     }
 
