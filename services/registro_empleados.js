@@ -20,7 +20,6 @@ class RegistroService {
     }
     async updateRegistro(data) {
         const registroUpdated = await this.mongoDB.updateEmpleado(this.collection, data.id, data);
-        console.log('empleado Updated', registroUpdated);
         return registroUpdated || {};
     }
 
