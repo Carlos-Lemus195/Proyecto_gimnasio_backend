@@ -1,47 +1,55 @@
 const express = require('express');
+const { get } = require('express/lib/response');
 const DietasService = require('../services/dietas.js');
 
 function dietaAPI(app) {
     const router = express.Router();
-    app.use("/dietas", router);
+    app.use("/dieta", router);
     const dietasService = new DietasService();
 
-    router.put("/", async function(req, res, next){
+    router.put("/create", async function (req, res, next) {
         let data = req.body;
         const reqs = isObjEmpty(data);
-        
-        if (reqs === true){
+
+        //console.log('body', data)
+
+        if (reqs === true) {
             data = req.query;
         }
+
+        const d = data.params.dieta
+
+        //console.log('d', d)
+
 
         console.log("╔═════════════════════════");
         console.log("║ Metodo PUT createDieta");
 
         try {
-                const dietaCreated = await dietasService.createDieta(data);
-                const dietaSting = dietaCreated.toString();
-                const idArray = dietaSting.split(" ");
-                const id = idArray[0];
+            const dietaCreated = await dietasService.createDieta(d);
+            const dietaSting = dietaCreated.toString();
+            const idArray = dietaSting.split(" ");
+            const id = idArray[0];
 
-                const findDieta = await dietasService.getDieta(id);
+            const findDieta = await dietasService.getDieta(id);
 
-                res.status(200).json({
-                    data: dietaCreated,
-                    message: 'Dieta creada exitosamente'
-                }); 
-                console.log('║ Dieta creada exitosamente', findDieta );
-                console.log("╚═════════════════════════");
+            res.status(200).json({
+                data: dietaCreated,
+                message: 'Dieta creada exitosamente'
+            });
+            console.log('║ Dieta creada exitosamente', findDieta);
+            console.log("╚═════════════════════════");
         } catch (error) {
             next(error);
         }
     });
 
 
-    router.get("/", async function(req, res, next){
-        let id  = req.body;
+    router.get("/", async function (req, res, next) {
+        let id = req.body;
         const reqs = isObjEmpty(id.id);
-    
-        if (reqs === true){
+
+        if (reqs === true) {
             id = req.query;
         }
 
@@ -53,22 +61,22 @@ function dietaAPI(app) {
 
             const emptyobj = isObjEmpty(dieta);
 
-            if (emptyobj === false){
+            if (emptyobj === false) {
 
                 res.status(200).json({
                     message: 'Busqueda exitosa',
                     dieta: dieta
                 });
-                console.log('║ Busqueda exitosa\n', dieta );
+                console.log('║ Busqueda exitosa\n', dieta);
                 console.log("╚═════════════════════════");
             }
-            else{
+            else {
                 res.status(200).json({
                     dieta: dieta,
                     message: 'Busqueda no exitosa, el id no se encuentra registrado'
                 });
             }
-            console.log('║ Busqueda no exitosa, el id \n║ no se encuentra registrado' );
+            console.log('║ Busqueda no exitosa, el id \n║ no se encuentra registrado');
             console.log("╚═════════════════════════");
 
 
@@ -77,13 +85,36 @@ function dietaAPI(app) {
         }
     });
 
-    
+    // router.get("/count", async function (req, res, next) {
+    //     const dietaCount = await dietasService.countDieta();
+    //     res.status(200).json({
+    //         data: dietaCount
+    //     });
+    // });
 
-    router.post("/", async function(req, res, next){
-        let  data  = req.body;
+    // router.get("/findskip", async function (req, res, next) {
+    //     let t = req.body;
+    //     const reqs = isObjEmpty(t);
+
+    //     if (reqs === true) {
+    //         t = req.query;
+    //     }
+
+    //     console.log(t)
+
+    //     const findskip = await dietasService.findskip(t);
+    //     res.status(200).json({
+    //         data: findskip
+    //     });
+    // })
+
+
+
+    router.post("/", async function (req, res, next) {
+        let data = req.body;
         const reqs = isObjEmpty(data);
-    
-        if (reqs === true){
+
+        if (reqs === true) {
             data = req.query;
         }
 
@@ -92,7 +123,7 @@ function dietaAPI(app) {
         console.log("║ Metodo POST updateDieta ");
         const findDieta = await dietasService.getDieta(data.id);
         const emptyObj = isObjEmpty(findDieta);
-        if (emptyObj === false){
+        if (emptyObj === false) {
 
             try {
                 const dietaUpdate = await dietasService.updateDieta(data);
@@ -102,47 +133,51 @@ function dietaAPI(app) {
                 });
                 console.log('║ Dieta actualizada exitosamente');
                 console.log("╚═════════════════════════");
-            
-               
+
+
             } catch (error) {
                 next(error);
-    
+
                 res.status(200).json({
                     message: 'Ocurrio un error'
                 });
-                
+
             }
         }
-        else{
+        else {
             res.status(200).json({
                 message: 'El id no se encuentra registrado'
             });
             console.log('║ Dieta no actualizada, el id \n║ no se encuentra registrado');
             console.log("╚═════════════════════════");
-        
+
         }
 
     });
 
-    router.delete("/", async function(req, res, next){
-        let id = req.body;
+    router.delete("/delete", async function (req, res, next) {
+        let data = req.body;
 
         console.log("╔═════════════════════════");
         console.log("║ Metodo DELETE deleteDieta ");
 
-        const reqs = isObjEmpty(id);
-    
-        if (reqs === true){
-             id = req.query;
+        const reqs = isObjEmpty(data);
+
+
+        if (reqs === true) {
+            data = req.query;
         }
 
-        const findDieta = await dietasService.getDieta(id);
+        console.log("║ ID ", data._id);
+
+
+        const findDieta = await dietasService.getDieta(data._id);
         const emptyobj = isObjEmpty(findDieta);
 
-        if (emptyobj === false){
-            
+        if (emptyobj === false) {
+
             try {
-                const dietaDelete = await dietasService.deleteDieta(id.id);
+                const dietaDelete = await dietasService.deleteDieta(data._id);
                 res.status(200).json({
                     id: dietaDelete,
                     message: 'Dieta eliminada '
@@ -153,7 +188,7 @@ function dietaAPI(app) {
                 next(error);
             }
         }
-        else{
+        else {
             res.status(200).json({
                 message: 'Dieta no eliminada, el id no se encuentra registrado. '
             });
@@ -164,27 +199,27 @@ function dietaAPI(app) {
 
     });
 
-    router.get("/all", async function(req, res, next){
+    router.get("/all", async function (req, res, next) {
 
-        console.log("╔═════════════════════════");
-        console.log("║ Metodo GET getTodos");
+        // console.log("╔═════════════════════════");
+        // console.log("║ Metodo GET getTodos");
 
         const dietas = await dietasService.getTodos();
         res.status(200).json({
             dieta: dietas,
             message: 'Busqueda exitosa'
         });
-        console.log('║ Busqueda exitosa. \n', dietas);
-        console.log("╚═════════════════════════");
+        // console.log('║ Busqueda exitosa. \n', dietas);
+        // console.log("╚═════════════════════════");
     });
 
     function isObjEmpty(obj) {
         for (var prop in obj) {
-          if (obj.hasOwnProperty(prop)) return false;
+            if (obj.hasOwnProperty(prop)) return false;
         }
-      
+
         return true;
-      }
+    }
 
 }
 
