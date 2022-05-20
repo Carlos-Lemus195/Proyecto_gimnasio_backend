@@ -4,11 +4,13 @@ class RegistroService {
 
     constructor() {
         this.collection = 'Clientes';
+        this.collection1 = 'Sucursales';
         this.mongoDB = new MongoLib();
     }
 
     async createRegistro(data) {
         const registroCreated = await this.mongoDB.create(this.collection, data);
+        const updateEmpleadosSucursalMas = await this.mongoDB.updateCantClientesMas(this.collection1, data.noSucursal);
         return registroCreated;
     }
 
@@ -19,13 +21,12 @@ class RegistroService {
 
     async updateCliente(data) {
         const clienteUpdated = await this.mongoDB.updateCliente(this.collection, data.id, data);
-        console.log('cliente Updated', clienteUpdated);
         return clienteUpdated || {};
     }
 
-    async deleteCliente(id) {
-        const clienteDeleted = await this.mongoDB.delete(this.collection, id);
-        console.log('Cliente deleted', clienteDeleted);
+    async deleteCliente(data) {
+        const clienteDeleted = await this.mongoDB.deleteCliente(this.collection, data.data);
+        const updateEmpleadosSucursalMenos = await this.mongoDB.updateCantClientesMenos(this.collection1, data.data.noSucursal);
         return clienteDeleted || {};
     }
 
