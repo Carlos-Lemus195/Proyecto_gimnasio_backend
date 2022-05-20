@@ -7,10 +7,13 @@ function rutinaAPI(app) {
     const rutinaService = new RutinaService();
 
     router.get("/", async function(req, res, next){
-        const { body: datos } = req;
-        console.log(datos)
+        const { query: datos } = req;
+        const id = Number(req.query.id);
+        console.log("number", id);
+        console.log(datos);
         try {
-            const result = await rutinaService.getRutina(datos.id);
+            console.log('datos', req.query)
+            const result = await rutinaService.getRutina(id);
             res.status(200).json({
                 rutina: result,
                 message: 'rutina requested successfully'
