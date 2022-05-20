@@ -5,7 +5,7 @@ class PagoPlataformaService {
     constructor() {
         this.collection = 'Clientes';
         this.mongoDB = new MongoLib();
-        this.todayMonth = new Date().getMonth();
+        this.todayMonth = new Date().getMonth() + 1;
         this.todayYear = new Date().getFullYear();
     }
 
