@@ -14,7 +14,11 @@ class SucursalService {
 
     async getSucursales() {
         const sucursal = await this.mongoDB.getTodos(this.collection);
-        console.log('sucursales from service', sucursal);
+        return sucursal || {};
+    }
+
+    async getSucursal(data) {
+        const sucursal = await this.mongoDB.getSucursal(this.collection, data)
         return sucursal || {};
     }
 
