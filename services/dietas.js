@@ -23,8 +23,8 @@ class DietasService {
         return dietaUpdated || {};
     }
 
-    async deleteDieta(id) {
-        const dietaDeleted = await this.mongoDB.delete(this.collection, id);
+    async deleteDieta(_id) {
+        const dietaDeleted = await this.mongoDB.delete(this.collection, _id);
         return dietaDeleted || {};
     }
 
@@ -32,19 +32,6 @@ class DietasService {
         const dieta = await this.mongoDB.getTodos(this.collection);
         return dieta || {};
     }
-
-    // async countDieta() {
-    //     const count = await this.mongoDB.count(this.collection);
-    //     console.log('count', count)
-    //     return count;
-    // }
-
-    // async findskip(t) {
-    //     console.log('t', t)
-    //     const findsk = await this.mongoDB.findskip(this.collection, t);
-    //     console.log('count', findsk)
-    //     return findsk;
-    // }
 
 }
 
